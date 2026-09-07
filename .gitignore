@@ -1,0 +1,30 @@
+# Unreal Engine generated data
+unreal/YunxiCampus/DerivedDataCache/
+unreal/YunxiCampus/Intermediate/
+unreal/YunxiCampus/Saved/
+unreal/YunxiCampus/Binaries/
+unreal/YunxiCampus/.vs/
+
+# Packaged builds and local captures
+deliverables/windows/
+deliverables/screenshots/*.tmp
+
+# Blender local/cache files
+**/*.blend1
+**/*.blend2
+**/cache/
+**/.cache/
+
+# OS/editor noise
+Thumbs.db
+.DS_Store
+.vscode/
+
+# Keep large source assets in Git LFS when available
+*.blend
+*.fbx
+*.uasset
+*.umap
+*.wav
+*.mp4
+*.mov

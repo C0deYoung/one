@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>郧西一中 · 重温上学时光</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<!-- 顶部 HUD -->
+<div id="hud" class="hidden">
+  <div id="counter">回忆 <b id="count">0</b> / 7</div>
+  <canvas id="minimap" width="200" height="150"></canvas>
+  <div id="hint">WASD 移动 · 鼠标 视角 · Shift 疾跑 · E 互动 · N 晚自习 · T 怀旧滤镜 · M 地图</div>
+</div>
+<div id="prompt" class="hidden">按 <b>E</b> 拾起这段回忆</div>
+<div id="toast" class="hidden"></div>
+
+<!-- 开场 -->
+<div id="intro">
+  <div class="intro-card">
+    <div class="emblem"></div>
+    <h1>郧西一中<span> · 重温上学时光</span></h1>
+    <p class="sub">湖北省十堰市郧西县城关镇学苑路 · 始建于一九四一年</p>
+    <p class="desc">毕业很多年后，你回到了这座山谷里的小城校园。<br>
+    校园里散落着 <b>7 段回忆</b>——走近那些发光的照片，把它们一张张拾起来。</p>
+    <button id="startBtn">开 始 探 索</button>
+    <p class="keys">WASD 移动 &nbsp;|&nbsp; 鼠标 转视角 &nbsp;|&nbsp; Shift 疾跑 &nbsp;|&nbsp; E 拾取回忆<br>
+    N 切换白天 / 晚自习 &nbsp;|&nbsp; T 怀旧滤镜 &nbsp;|&nbsp; Esc 暂停</p>
+    <p class="credit">素材：校园照片来自抖音 @15637078、百度百科、百家号@十堰钢哥、郧西县教育局、<br>
+    百度贴吧（郧西一中吧 · 郧西县中吧）等公开渠道 · 仅供同学纪念交流 · 请勿商用</p>
+  </div>
+</div>
+
+<!-- 回忆卡片 -->
+<div id="card" class="hidden">
+  <div class="polaroid">
+    <div class="photo"><img id="cardImg" alt="" src=""><div id="cardFallback"></div></div>
+    <div class="tape"></div>
+    <div class="caption">
+      <h2 id="cardTitle"></h2>
+      <p id="cardTime" class="time"></p>
+      <p id="cardText"></p>
+    </div>
+    <button id="cardClose">合上 (E)</button>
+  </div>
+</div>
+
+<!-- 结局 -->
+<div id="ending" class="hidden">
+  <div class="end-card">
+    <h1>重逢 · 郧西一中</h1>
+    <p class="motto">养正观成 · 立德树人</p>
+    <div class="photo-frame"><img id="endImg" src="assets/reference/campus-aerial.jpg" alt="校园"></div>
+    <p class="end-text">七段回忆都找回来了。<br>
+    从这里走出去很多年，才发现最好的时光，<br>
+    是当年拼命想逃离、如今却再也回不去的郧西一中。</p>
+    <button id="endClose">再走一遍校园</button>
+  </div>
+</div>
+
+<!-- 暂停 -->
+<div id="pause" class="hidden">
+  <div class="pause-card">
+    <h2>已暂停</h2>
+    <p>点击画面继续探索</p>
+  </div>
+</div>
+
+<script src="lib/three.min.js"></script>
+<script src="js/textures.js"></script>
+<script src="js/world.js"></script>
+<script src="js/buildings.js"></script>
+<script src="js/memories.js"></script>
+<script src="js/controls.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
