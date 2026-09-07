@@ -2,7 +2,7 @@
 
 **计划文件**：`docs/superpowers/plans/2026-09-07-ue5-campus-playable-vertical-slice.md`
 **执行日期**：2026-09-07（本文档由执行会话写入，供后续会话续接）
-**当前状态**：任务 1–8 已完成并提交；任务 9 已完成照片导入、交互/回忆点/Widget 资产基线和地图落点，但 Blueprint 变量、E 键视线交互及 UI 图仍待编辑器补齐；任务 10–12 未开始。
+**当前状态**：任务 1–8 已完成并提交；任务 9 已完成照片导入、交互/回忆点/Widget 资产基线和地图落点，但 Blueprint 变量、E 键视线交互及 UI 图仍待编辑器补齐；任务 10 已完成并通过命令行验证；任务 11–12 未开始。
 
 ## 已完成任务（含提交号）
 
@@ -83,6 +83,15 @@
 阻塞点：UE5.8 Python 将 `EdGraphPinType` 暴露为不可写 opaque struct，`BlueprintEditorLibrary.add_member_variable` 无法通过命令行写入 Name/Text/Texture/Float 类型，因此尚未自动生成 Blueprint 变量、`Interact` 图、E 键 Line Trace 和 UMG 控件。下一次桌面编辑器批次需要打开这三个资产，按原计划补图并完成一次人工 PIE 交互验收。
 
 **下一步从任务 10 继续**：先生成可重复的项目验证脚本，验证当前地图、主楼、材质、照片和回忆点资产路径；随后在任务 11 用桌面编辑器补交互图并做路线测试。
+
+## 任务 10 当前状态（已完成）
+
+已完成：
+- 创建 `tools/ue/validate_project.py`，检查 8 个必需资产、当前世界路径、`MainBuilding`/`CampusGround`/`MemoryPoint_01` 标签和四个低画质 CVar。
+- 运行 UE5.8 命令行验证通过，日志为 `YUNXI_VALIDATION_OK assets=8 actors=7 world=/Game/Campus/Maps/L_CampusTest.L_CampusTest`。
+- QA 结果已写入 `docs/qa/ue-smoke-test.md`。
+
+**下一步从任务 11 继续**：启动桌面编辑器，完成 Blueprint 交互图补齐、PIE/Standalone 路线测试、截图和性能记录。
 
 **编辑器注意**：桌面 2 上有一个打开的编辑器（PID 会话），Lvl_FirstPerson 处于脏标记（临时 Actor 已清理但关卡仍标记未保存）。关闭编辑器时选**不保存**；或继续在该会话控制台里执行后续 py 脚本（任务 7/8 也可这样跑）。
 

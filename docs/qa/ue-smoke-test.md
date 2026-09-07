@@ -74,3 +74,9 @@
 - `L_CampusTest` 已放置 `MemoryPoint_01`（位置 0, -2500, 140）和可见的 `MemoryPointMarker` 球体标记，标记使用红色结构材质。
 
 UE5.8 命令行 Python 将 `EdGraphPinType` 暴露为不可写的 opaque struct，无法可靠地自动写入 Blueprint 变量和图节点；因此 `BP_MemoryPoint` 的 typed variables、E 键视线交互和 Widget 布局留到编辑器 Blueprint 操作批次完成。当前提交提供了照片、接口/Actor/Widget 资产和地图落点，未宣称交互已通过。
+
+## 5. 项目验证器（任务 10，2026-09-07）
+
+运行 `tools/ue/validate_project.py` 的 UE5.8 命令行验证通过，日志输出：
+`YUNXI_VALIDATION_OK assets=8 actors=7 world=/Game/Campus/Maps/L_CampusTest.L_CampusTest`。
+验证内容包括 8 个必需资产、`MainBuilding`/`CampusGround`/`MemoryPoint_01` 三个地图标签，以及 Lumen、反射、Nanite 和 Virtual Shadow Maps 四个 CVar 均为 0。
