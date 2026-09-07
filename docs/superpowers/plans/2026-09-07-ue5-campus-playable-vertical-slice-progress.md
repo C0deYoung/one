@@ -130,6 +130,13 @@
 ## 提交记录（本会话）
 
 ```
+13f15e3 test: package playable campus build
+b8aa60e test: record UE campus PIE smoke test
+f3898ed test: add UE campus project validator
+74bc80e feat: add first campus memory asset baseline
+6457abc feat: rebuild main-building materials in UE5
+f04057b feat: add playable main building test map
+18b251d feat: import main building into UE5
 1464843 test: validate Blender FBX scale in UE5
 2d27316 chore: enforce low-quality UE validation preset
 cb99163 feat: create UE5 first-person campus project

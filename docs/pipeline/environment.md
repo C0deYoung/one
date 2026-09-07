@@ -17,6 +17,12 @@
 - 派生数据缓存（DDC）：用户级环境变量 `UE-LocalDataCachePath=E:\UE-DDC`，缓存目录 `E:\UE-DDC`（UE 5.8 的 Zen 数据写入其下 `Zen` 子目录）。
 - Git：`C:\Program Files\Git\cmd\git.exe`。
 - Git LFS：3.7.0，`C:\Program Files\Git\cmd\git-lfs.exe`。
+- Visual C++ 运行库：UE 自带 `Engine\\Extras\\Redist\\en-us\\vc_redist.x64.exe` 已安装；当前打包启动验证使用 14.50.35719。
+- Windows SDK：完整 `RunUAT ... -build` 需要安装项目配置的 Windows SDK（当前机器曾因缺少 `10.0.19041.0` 被阻断）；只复用已 Cook 结果时可用 `-skipbuild -skipcook`。
+
+## 另一台电脑的可复制入口
+
+完整的克隆、Git LFS、DDC、UE 命令行校验、PIE/Standalone、Windows Development 打包和故障排查步骤见 [`ue5-continue-on-another-pc.md`](ue5-continue-on-another-pc.md)。该文档中的 UE 路径以当前机器的 `E:\UE\UE_5.8` 为例；换盘符时只需替换命令中的路径。
 
 ## 安装后要补录
 

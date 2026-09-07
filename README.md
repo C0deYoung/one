@@ -4,6 +4,11 @@
 1941 年建校，校训"养正观成、立德树人"）为原型，根据校园实拍照片用 Three.js 低多边形重建，
 在校园里拾起 7 段上学时代的回忆。
 
+> 本仓库同时保留早期 Three.js 单文件演示和当前的 Blender + Unreal Engine 5 开发线。
+> 要在另一台电脑继续 UE5 开发，请先阅读
+> [`docs/pipeline/ue5-continue-on-another-pc.md`](docs/pipeline/ue5-continue-on-another-pc.md)。
+> UE5 项目入口是 `unreal/YunxiCampus/YunxiCampus.uproject`，当前低画质可启动基线和未完成项都在该指南中记录。
+
 | 白天 | 晚自习（按 N） |
 |------|------|
 | ![白天](preview-day.png) | ![晚自习](preview-night.png) |
