@@ -25,11 +25,6 @@ OUTPUT = os.path.join(ROOT, "art", "blender", "campus-blockout.blend")
 def clear_scene() -> None:
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.object.delete(use_global=False)
-    for datablocks in (bpy.data.meshes, bpy.data.curves, bpy.data.materials, bpy.data.cameras):
-        # Remove only orphaned datablocks left by this generated scene.
-        for block in list(datablocks):
-            if block.users == 0:
-                datablocks.remove(block)
 
 
 def configure_scene() -> None:
@@ -37,7 +32,13 @@ def configure_scene() -> None:
     scene.unit_settings.system = "METRIC"
     scene.unit_settings.length_unit = "METERS"
     scene.unit_settings.scale_length = 1.0
-    scene.render.engine = "BLENDER_EEVEE_NEXT"
+    # Blender 5.2 exposes the real-time engine as BLENDER_EEVEE; newer builds
+    # may expose BLENDER_EEVEE_NEXT. Keep the generator portable across LTS
+    # releases because the blockout does not depend on a specific renderer.
+    try:
+        scene.render.engine = "BLENDER_EEVEE_NEXT"
+    except TypeError:
+        scene.render.engine = "BLENDER_EEVEE"
     scene.world.color = (0.55, 0.65, 0.75)
 
 
@@ -122,10 +123,11 @@ def main_building():
     # Main five-floor building. The centre entrance is left as a separate tower
     # so the facade can be rebuilt without replacing both wings.
     body = building("SM_MainTeachingBuilding_Blockout", 0, 12, 110, 12, 5, MAT["main"])
-    cube("SM_MainEntranceTower_Blockout", (22, 19, 4), (0, 9.5, 5.5), MAT["glass"], COL["buildings"])
-    cube("SM_MainEntranceCanopy_Blockout", (28, 2.0, 7), (0, 3.7, 0.5), MAT["building"], COL["buildings"])
+    # Z+ is south/front; keep the entrance on the south face of the main body.
+    cube("SM_MainEntranceTower_Blockout", (22, 19, 4), (0, 9.5, 19.5), MAT["glass"], COL["buildings"])
+    cube("SM_MainEntranceCanopy_Blockout", (28, 2.0, 7), (0, 3.7, 19.5), MAT["building"], COL["buildings"])
     for x in (-8.0, -3.0, 3.0, 8.0):
-        cube(f"SM_MainEntranceColumn_{int(x)}", (0.55, 3.5, 0.55), (x, 1.75, 0.0), MAT["building"], COL["buildings"])
+        cube(f"SM_MainEntranceColumn_{int(x)}", (0.55, 3.5, 0.55), (x, 1.75, 19.5), MAT["building"], COL["buildings"])
     body["reference_photos"] = "01,05,07,09,12,27"
 
 

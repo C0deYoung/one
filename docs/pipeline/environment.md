@@ -11,14 +11,14 @@
 
 ## 工具检查
 
-- Blender：未在 PATH 中找到；`C:\Program Files\Blender Foundation` 不存在。
+- Blender：已安装 5.2.1 LTS，路径为 `C:\Program Files\Blender Foundation\Blender 5.2\blender.exe`。
 - Unreal Engine：未在 PATH 中找到；常见 Epic Games 安装目录未找到。
 - Git：`C:\Program Files\Git\cmd\git.exe`。
 - Git LFS：`C:\Program Files\Git\cmd\git-lfs.exe`。
 
 ## 安装后要补录
 
-1. Blender 精确版本、UE 精确版本、FBX 导出插件/脚本版本。
+1. UE 精确版本、FBX 导出插件/脚本版本。
 2. GPU 驱动版本、显存与共享内存、系统内存、目标屏幕分辨率。
 3. 阶段 B 首次导入的比例、法线、材质和碰撞结果。
 4. 阶段 F 的平均 FPS、1% low、GPU/CPU/显存峰值和测试画质。

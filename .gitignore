@@ -22,11 +22,4 @@ Thumbs.db
 .DS_Store
 .vscode/
 
-# Keep large source assets in Git LFS when available
-*.blend
-*.fbx
-*.uasset
-*.umap
-*.wav
-*.mp4
-*.mov
+# Large source assets are tracked through .gitattributes/Git LFS.
