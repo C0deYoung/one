@@ -87,3 +87,11 @@ UE5.8 命令行 Python 将 `EdGraphPinType` 暴露为不可写的 opaque struct�
 - 点击 PIE 视口取得焦点后发送 `W`，角色/视角发生移动；按 `F8` 正常退出 PIE。
 - 日志确认 `Created PIE world ... UEDPIE_0_L_CampusTest`、`PIE总开始时间：0.79秒`，未出现 Blueprint Runtime Error 或崩溃。
 - 当前视口照明偏暗，主楼可见区域有限；任务 11 的材质/灯光调校、截图、性能统计和任务 9 的交互图仍未完成。
+
+## 7. Windows Development 包（任务 12，2026-09-07）
+
+- 首次 `BuildCookRun -build -cook -stage -pak -archive` 被 Windows SDK `10.0.19041.0` 缺失阻断。
+- 工程未使用 `GameplayStateTree`，已在 `.uproject` 中关闭该插件，使项目回到无代码蓝图工程；随后用 `-skipbuild -cook -stage -pak -archive` 完成 Cook/Stage/Pak/Archive，UAT 输出 `BUILD SUCCESSFUL`、退出码 0。
+- 包路径：`deliverables/windows/YunxiCampus/YunxiCampus.exe`，可执行文件约 168 KiB；内容容器位于同目录 `YunxiCampus/Content/Paks/`，归档生成物由 `.gitignore` 忽略。
+- 启动前安装 UE 自带 VC++ 运行库 `14.50.35719`（此前 14.44 过旧）；随后以 `-nullrhi -unattended` 启动包，进程成功创建并保持运行，随后正常结束测试进程。
+- 尚未做脱离编辑器的 10 分钟人工游玩；回忆点交互图和最终视觉调校完成后再补完整包验收。

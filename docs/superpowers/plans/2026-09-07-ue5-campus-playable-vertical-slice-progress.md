@@ -2,7 +2,7 @@
 
 **计划文件**：`docs/superpowers/plans/2026-09-07-ue5-campus-playable-vertical-slice.md`
 **执行日期**：2026-09-07（本文档由执行会话写入，供后续会话续接）
-**当前状态**：任务 1–8 已完成并提交；任务 9 已完成照片导入、交互/回忆点/Widget 资产基线和地图落点，但 Blueprint 变量、E 键视线交互及 UI 图仍待编辑器补齐；任务 10 已完成并通过命令行验证；任务 11 已完成一次 PIE 启停和 WASD 输入阶段验证，完整路线/截图/性能记录仍待补齐；任务 12 未开始。
+**当前状态**：任务 1–8 已完成并提交；任务 9 已完成照片导入、交互/回忆点/Widget 资产基线和地图落点，但 Blueprint 变量、E 键视线交互及 UI 图仍待编辑器补齐；任务 10 已完成并通过命令行验证；任务 11 已完成一次 PIE 启停和 WASD 输入阶段验证，完整路线/截图/性能记录仍待补齐；任务 12 已完成 Cook/Stage/Pak/Archive 和包启动验证，完整 10 分钟人工游玩仍待补齐。
 
 ## 已完成任务（含提交号）
 
@@ -106,6 +106,16 @@
 - 任务 9 的 Blueprint 变量、E 键视线交互和 UMG 关闭逻辑需要在编辑器 Blueprint UI 中补齐。
 
 **下一步从任务 11 的编辑器补齐批次继续**：先处理灯光可见性和 Blueprint 图，再做路线/Standalone 记录；完成后进入任务 12 Windows Development 打包。
+
+## 任务 12 当前状态（打包和启动基线完成）
+
+已完成：
+- 检查到首次完整 Build 被 Windows SDK `10.0.19041.0` 缺失阻断；工程并未使用 `GameplayStateTree`，已关闭该插件并回到无代码蓝图打包路线。
+- 复用 Cook 结果执行 `RunUAT.bat BuildCookRun -skipbuild -skipcook -stage -pak -archive`，UAT 输出 `BUILD SUCCESSFUL`、退出码 0。
+- 归档包生成于 `deliverables/windows/YunxiCampus`，`YunxiCampus.exe` 存在；该目录由 `.gitignore` 忽略。
+- 安装 UE 自带 VC++ 运行库后，使用 `-nullrhi -unattended` 启动包，进程成功创建并保持运行，再结束测试进程。
+
+当前限制：尚未完成脱离编辑器的 10 分钟人工游玩、完整 PIE/Standalone 性能截图，以及任务 9 Blueprint 交互图。当前工程已能在 UE5 编辑器启动、PIE 运行和 Windows Development 包启动，但尚未达到最终交互验收完成状态。
 
 **编辑器注意**：桌面 2 上有一个打开的编辑器（PID 会话），Lvl_FirstPerson 处于脏标记（临时 Actor 已清理但关卡仍标记未保存）。关闭编辑器时选**不保存**；或继续在该会话控制台里执行后续 py 脚本（任务 7/8 也可这样跑）。
 
