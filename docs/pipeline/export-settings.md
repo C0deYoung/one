@@ -1,11 +1,14 @@
-# Blender → Unreal Engine 5 导出规范（初版）
+# Blender → Unreal Engine 5 导出规范
 
-此规范在安装软件并完成 1 米立方体导入测试后锁定版本。当前工作区尚未安装 Blender 或 UE5。
+Blender 5.2.1 LTS 与 UE 5.8.2 已安装。以下坐标与导出参数已由比例测试件
+`art/export/fbx/scale-test.fbx`（生成脚本 `art/blender/scripts/export_scale_test_fbx.py`）
+锁定，主楼等后续资产必须沿用同一套参数。
 
 ## 坐标、单位与命名
 
-- Blender 场景单位使用 Metric，长度以米显示；应用 Rotation/Scale 后导出。
-- X 东、Y 上、Z 南；资产局部正面朝 -Y 或按资产说明固定，导入 UE 后统一检查朝向。
+- Blender 场景单位使用 Metric，长度以米显示；几何按 X 东、Y 上（高度轴）、Z 南构建，导出前烘焙/确认 Rotation 与 Scale 已应用。
+- Blender 5.2.1 实际 FBX 导出轴向：`bpy.ops.export_scene.fbx` 使用 `axis_forward="-Z"`、`axis_up="Y"`、`apply_scale_options="FBX_SCALE_ALL"`、`use_selection=True`、`object_types={"MESH"}`，写出 FBX 7400 文件。测试件回读校验（`-- --verify`）确认 1 米立方体三轴误差小于 0.001 m、三个 `UCX_SM_Test_DoorFrame_*` 碰撞盒不封门洞。
+- **UE 导入验收值：Blender 中的 1 m 在 UE 中必须显示为 100 cm；测试门洞净宽 160 cm、净高 200 cm，玩家胶囊可穿过且门柱、顶梁能阻挡。** 任何资产导入后尺寸为 1 cm 或 10000 cm 都说明导出参数被改动，必须停下修正。
 - 模型原点放在便于对齐的角点或地面中心；建筑模块不要把原点留在随机编辑点。
 - 可见网格：`SM_<区域>_<资产>_<变体>`，例如 `SM_Main_MainEntrance_A`。
 - 材质：`M_<类别>_<名称>`；材质实例：`MI_<资产>_<材质>`；贴图：`T_<资产>_<用途>`。
