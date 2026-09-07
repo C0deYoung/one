@@ -55,3 +55,33 @@ Import Materials/Textures=Off、Uniform Scale=1.0、不生成缺失碰撞（UCX 
 - 编辑器世界的 `KismetSystemLibrary.line_trace_single` 在本环境不产生命中；
   几何验证改用资产包围盒量取 + PIE 行走完成。
 - 编辑器启动时的 VC++ 可再发行组件过旧警告为非阻断（见 ue-smoke-test.md）。
+
+## 主楼原型（任务 6，2026-09-07）
+
+生成资产：`/Game/Campus/Buildings/MainBuilding/SM_MainBuilding`。
+通过 `tools/ue/import_main_building.py` 在 UE 5.8.2 commandlet 中重新导入，
+导入设置为 Static Mesh、Combine Meshes=On、Import Materials/Textures=Off、
+Uniform Scale=1.0、Build Nanite=Off。
+
+### Bounds 实测（单位 cm，Actor Bounds Extent）
+
+| 轴 | Extent | 完整尺寸 | 结论 |
+|---|---:|---:|---|
+| X | 5500 | 11000（110m） | 与主楼两翼宽度假设一致 |
+| Y | 845 | 1690（16.9m） | 为导出旋转后的进深轴 |
+| Z | 1145 | 2290（22.9m） | UE 高度轴，建筑直立 |
+
+Blender 源文件的本地 Bounds 是 X=110m、Y=22.91m、Z=16.9m。由于 FBX
+导出脚本在导出前绕世界 X 轴 +90° 烘焙，UE 结果为 X=110m、Y=16.9m、
+Z=22.9m；三轴范围已由脚本逐轴断言通过，没有在关卡里旋转资产补偿轴向。
+
+### 材质与碰撞
+
+- 材质槽数量：10。
+- 碰撞模式：`BodySetup.collision_trace_flag = CTF_USE_COMPLEX_AS_SIMPLE`。
+- 资产保存路径：`unreal/YunxiCampus/Content/Campus/Buildings/MainBuilding/SM_MainBuilding.uasset`。
+- 导入日志结果：`MAINBUILD collision_trace_flag set to CTF_USE_COMPLEX_AS_SIMPLE`、
+  `MAINBUILD bounds origin=(0,1445,21146) extents=(5500,845,1145)`、
+  `MAINBUILD material_slots=10`、`MAINBUILD_IMPORT_OK`。
+- FBX 中部分网格缺少平滑组，UE 产生平滑组警告；没有阻断导入，材质重建和
+  近景法线检查仍在任务 8 执行。

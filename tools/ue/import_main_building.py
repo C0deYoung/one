@@ -53,10 +53,13 @@ def main():
             raise RuntimeError(f"renamed asset missing: {TARGET}")
 
         mesh = unreal.EditorAssetLibrary.load_asset(TARGET)
-        mesh.set_editor_property("collision_complexity",
-                                 unreal.CollisionComplexity.USE_COMPLEX_AS_SIMPLE)
+        body_setup = mesh.get_editor_property("body_setup")
+        body_setup.set_editor_property(
+            "collision_trace_flag",
+            unreal.CollisionTraceFlag.CTF_USE_COMPLEX_AS_SIMPLE,
+        )
         unreal.EditorAssetLibrary.save_asset(TARGET)
-        unreal.log(f"MAINBUILD collision_complexity set to USE_COMPLEX_AS_SIMPLE")
+        unreal.log("MAINBUILD collision_trace_flag set to CTF_USE_COMPLEX_AS_SIMPLE")
 
         actor_sub = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
         actor = actor_sub.spawn_actor_from_object(mesh, unreal.Vector(0.0, 0.0, 20000.0))
@@ -70,12 +73,17 @@ def main():
         slots = mesh.get_editor_property("static_materials")
         unreal.log(f"MAINBUILD material_slots={len(slots)}")
 
-        # Expected overall size ~110m x 22.9m x 16.9m: height 16.9 m must be on
-        # UE Z (extent ~845 cm).
-        if abs(extent.z - 845.0) > 60.0:
-            raise RuntimeError(
-                f"building Z extent {extent.z:.0f} cm, expected ~845 (16.9 m height on Z)"
-            )
+        # Blender source bounds are X=110m, Y=22.91m, Z=16.9m. The export
+        # bakes a +90 degree X rotation, so UE receives X=110m, Y=16.9m,
+        # Z=22.91m. Validate all three axes so a future axis regression fails
+        # before the asset reaches a gameplay map.
+        expected_extents = (5500.0, 845.0, 1145.5)
+        actual_extents = (extent.x, extent.y, extent.z)
+        for axis, (actual, expected) in enumerate(zip(actual_extents, expected_extents)):
+            if abs(actual - expected) > 60.0:
+                raise RuntimeError(
+                    f"building extent axis {axis}={actual:.0f} cm, expected ~{expected:.0f} cm"
+                )
         unreal.log("MAINBUILD_IMPORT_OK")
     except Exception as err:
         unreal.log_error(f"MAINBUILD_IMPORT_FAILED: {err}")

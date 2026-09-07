@@ -2,7 +2,7 @@
 
 **计划文件**：`docs/superpowers/plans/2026-09-07-ue5-campus-playable-vertical-slice.md`
 **执行日期**：2026-09-07（本文档由执行会话写入，供后续会话续接）
-**当前状态**：任务 1–5 已完成并提交；任务 6 进行到一半；任务 7–12 未开始。
+**当前状态**：任务 1–5 已完成并提交；任务 6 已完成主楼导入、碰撞和三轴 Bounds 验收；任务 7–12 未开始。
 
 ## 已完成任务（含提交号）
 
@@ -39,11 +39,14 @@
 - `tools/ue/import_main_building.py` 已写好并修完两个 API 错误（list_assets、条件退出）。
 - 首次导入实际已通过 Interchange 生成 `/Game/Campus/Buildings/MainBuilding/main-building.uasset`（合并网格，仅平滑组警告，无错误）。
 
-**未完成（下一步从这里继续）**：
-1. 在编辑器控制台执行 `py "E:/data/zcode/.zcode/workspace/default/yunxi-campus-3d/tools/ue/import_main_building.py"`——它会删除目录重新导入、重命名为 `SM_MainBuilding`、设置 `collision_complexity=USE_COMPLEX_AS_SIMPLE`、量取 Bounds 并断言 Z extent≈845cm（16.9m 高度在 Z 轴）、输出 `MAINBUILD_IMPORT_OK`。注意脚本用 `list_assets(DEST, False, True)` 找新资产——合并网格首次导入名为 `main-building`。
-2. 若 Bounds 断言失败（计划预期整楼约 110m × 22.9m × 16.9m），先查 main-building.blend 的实际尺寸再调断言。
-3. 把结果补录进 `docs/qa/ue-import-validation.md`（主楼 Bounds、材质槽数、碰撞模式、导入耗时）。
-4. 提交 `feat: import main building into UE5`。
+**任务 6 验收结果**：
+1. 使用 `UnrealEditor-Cmd.exe` 执行 `tools/ue/import_main_building.py`，合并网格导入并重命名为 `SM_MainBuilding`。
+2. `BodySetup.collision_trace_flag` 设置为 `CTF_USE_COMPLEX_AS_SIMPLE`；UE5.8 没有旧脚本使用的 `unreal.CollisionComplexity` 枚举。
+3. Blender 源 Bounds 为 X=110m、Y=22.91m、Z=16.9m；烘焙 +90° X 旋转后 UE Bounds 为 X=11000cm、Y=1690cm、Z=2291cm，三轴断言通过。
+4. 材质槽数量为 10；平滑组缺失仅产生导入警告，没有阻断资产生成。
+5. 结果已补录到 `docs/qa/ue-import-validation.md`，并提交 `feat: import main building into UE5`。
+
+**下一步从任务 7 继续**：用编辑器 Python 创建 `L_CampusTest`，放置主楼、地面、PlayerStart 和基础日光，设置默认地图并进行 PIE/Standalone 路线测试。
 
 **编辑器注意**：桌面 2 上有一个打开的编辑器（PID 会话），Lvl_FirstPerson 处于脏标记（临时 Actor 已清理但关卡仍标记未保存）。关闭编辑器时选**不保存**；或继续在该会话控制台里执行后续 py 脚本（任务 7/8 也可这样跑）。
 
