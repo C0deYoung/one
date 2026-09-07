@@ -54,3 +54,13 @@
 `SM_MainBuilding` 就绪、世界进入 Play 并正常退出。地图包含
 `MainBuilding`、`CampusGround`、`CampusPlayerStart`、`CampusSun` 和
 `CampusSkyLight` 五个 Actor。GUI PIE/Standalone 的人工行走路线尚未记录，安排在任务 11。
+
+## 3. 主楼低成本材质验证（任务 8，2026-09-07）
+
+使用 `tools/ue/rebuild_main_materials.py` 生成并保存：
+
+- `M_Campus_Master`：Opaque、Default Lit，参数为 BaseColor、Roughness、Metallic、NormalStrength。
+- `M_Campus_Glass`：Translucent、Default Lit、单面，绿色 BaseColor、Opacity 0.55、Roughness 0.25。
+- 8 个材质实例：`MI_Main_WhiteTile`、`MI_Main_BlueBand`、`MI_Main_GreenGlass`、`MI_Main_Concrete`、`MI_Main_RedStructure`、`MI_Main_Aluminium`、`MI_Main_DarkInterior`、`MI_Main_RedPaving`。
+
+命令行日志确认 `CAMPUS_MAT MATERIALS_OK slots=10`。10 个导入槽已按 Blender 名称分配：蓝带、混凝土、白色 Trim、红结构、绿色玻璃、玻璃阴影、白砖、砖阴影、红铺装和红字。材质图只使用基础颜色、粗糙度、金属度和透明度参数，未启用折射或高成本透明阴影。

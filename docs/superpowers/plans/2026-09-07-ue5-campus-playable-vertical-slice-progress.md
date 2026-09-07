@@ -2,7 +2,7 @@
 
 **计划文件**：`docs/superpowers/plans/2026-09-07-ue5-campus-playable-vertical-slice.md`
 **执行日期**：2026-09-07（本文档由执行会话写入，供后续会话续接）
-**当前状态**：任务 1–6 已完成并提交；任务 7 已完成关卡创建、场景布置、默认地图配置和无渲染启动验证；任务 8–12 未开始。
+**当前状态**：任务 1–7 已完成并提交；任务 8 已完成低成本材质母材质、8 个实例和 10 个材质槽分配；任务 9–12 未开始。
 
 ## 已完成任务（含提交号）
 
@@ -58,6 +58,19 @@
 当前限制：任务 7 只验证了无渲染启动和地图加载，尚未完成 GUI PIE/Standalone 的 WASD 路线与入口碰撞人工验收；这些留到任务 11 的桌面测试批次统一完成。
 
 **下一步从任务 8 继续**：创建主楼不透明/玻璃材质母材质和实例，并把 10 个导入材质槽替换为低画质可读材质。
+
+## 任务 8 当前状态（已完成）
+
+已完成：
+- `tools/ue/rebuild_main_materials.py` 在 UE5.8 命令行编辑器中创建 `M_Campus_Master` 和 `M_Campus_Glass`。
+- 创建 `MI_Main_WhiteTile`、`MI_Main_BlueBand`、`MI_Main_GreenGlass`、`MI_Main_Concrete`、`MI_Main_RedStructure`、`MI_Main_Aluminium`、`MI_Main_DarkInterior`、`MI_Main_RedPaving` 八个实例。
+- 根据 Blender 导入槽名完成 10 个材质槽分配，日志输出 `CAMPUS_MAT MATERIALS_OK slots=10`。
+- 玻璃仅使用绿色 BaseColor、Opacity 0.55 和 Roughness 0.25，未启用折射；母材质保持基础颜色/粗糙度/金属度参数，符合低画质路线。
+- QA 结果已追加到 `docs/qa/ue-smoke-test.md`。
+
+当前限制：尚未在 GUI 视口的三个路线视角人工检查 Shader Complexity 和材质辨识度，安排在任务 11 的桌面冒烟批次。
+
+**下一步从任务 9 继续**：导入第一张校园照片并建立一个可关闭的回忆点交互。
 
 **编辑器注意**：桌面 2 上有一个打开的编辑器（PID 会话），Lvl_FirstPerson 处于脏标记（临时 Actor 已清理但关卡仍标记未保存）。关闭编辑器时选**不保存**；或继续在该会话控制台里执行后续 py 脚本（任务 7/8 也可这样跑）。
 
