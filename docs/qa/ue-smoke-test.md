@@ -64,3 +64,13 @@
 - 8 个材质实例：`MI_Main_WhiteTile`、`MI_Main_BlueBand`、`MI_Main_GreenGlass`、`MI_Main_Concrete`、`MI_Main_RedStructure`、`MI_Main_Aluminium`、`MI_Main_DarkInterior`、`MI_Main_RedPaving`。
 
 命令行日志确认 `CAMPUS_MAT MATERIALS_OK slots=10`。10 个导入槽已按 Blender 名称分配：蓝带、混凝土、白色 Trim、红结构、绿色玻璃、玻璃阴影、白砖、砖阴影、红铺装和红字。材质图只使用基础颜色、粗糙度、金属度和透明度参数，未启用折射或高成本透明阴影。
+
+## 4. 回忆点资产基线（任务 9，2026-09-07）
+
+使用 `tools/ue/create_memory_interaction.py` 完成：
+
+- 照片 `E:\download\pic\一中\06_广场课间操全景_布局关键图.jpg` 已导入为 `/Game/Campus/Textures/Memories/T_Memory_01`，尺寸 853×640，纹理分组按 UI 兼容属性尝试设置，最大尺寸上限为 2048。
+- 创建 `/Game/Campus/Blueprints/BPI_Interactable`、`BP_MemoryPoint` 和 `/Game/Campus/UI/WBP_MemoryViewer`。
+- `L_CampusTest` 已放置 `MemoryPoint_01`（位置 0, -2500, 140）和可见的 `MemoryPointMarker` 球体标记，标记使用红色结构材质。
+
+UE5.8 命令行 Python 将 `EdGraphPinType` 暴露为不可写的 opaque struct，无法可靠地自动写入 Blueprint 变量和图节点；因此 `BP_MemoryPoint` 的 typed variables、E 键视线交互和 Widget 布局留到编辑器 Blueprint 操作批次完成。当前提交提供了照片、接口/Actor/Widget 资产和地图落点，未宣称交互已通过。

@@ -567,6 +567,7 @@ git commit -m "feat: rebuild main-building materials in UE5"
 ### 任务 9：实现一个可关闭的回忆点
 
 **文件：**
+- 创建：`tools/ue/create_memory_interaction.py`
 - 创建：`unreal/YunxiCampus/Content/Campus/Blueprints/BPI_Interactable.uasset`
 - 创建：`unreal/YunxiCampus/Content/Campus/Blueprints/BP_MemoryPoint.uasset`
 - 创建：`unreal/YunxiCampus/Content/Campus/UI/WBP_MemoryViewer.uasset`

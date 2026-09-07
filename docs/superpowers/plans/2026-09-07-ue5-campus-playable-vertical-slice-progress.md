@@ -2,7 +2,7 @@
 
 **计划文件**：`docs/superpowers/plans/2026-09-07-ue5-campus-playable-vertical-slice.md`
 **执行日期**：2026-09-07（本文档由执行会话写入，供后续会话续接）
-**当前状态**：任务 1–7 已完成并提交；任务 8 已完成低成本材质母材质、8 个实例和 10 个材质槽分配；任务 9–12 未开始。
+**当前状态**：任务 1–8 已完成并提交；任务 9 已完成照片导入、交互/回忆点/Widget 资产基线和地图落点，但 Blueprint 变量、E 键视线交互及 UI 图仍待编辑器补齐；任务 10–12 未开始。
 
 ## 已完成任务（含提交号）
 
@@ -71,6 +71,18 @@
 当前限制：尚未在 GUI 视口的三个路线视角人工检查 Shader Complexity 和材质辨识度，安排在任务 11 的桌面冒烟批次。
 
 **下一步从任务 9 继续**：导入第一张校园照片并建立一个可关闭的回忆点交互。
+
+## 任务 9 当前状态（资产基线完成，交互图待编辑器补齐）
+
+已完成：
+- `E:\download\pic\一中\06_广场课间操全景_布局关键图.jpg` 已导入 `/Game/Campus/Textures/Memories/T_Memory_01`。
+- 创建 `BPI_Interactable`、`BP_MemoryPoint` 和 `WBP_MemoryViewer` 三个资产。
+- `L_CampusTest` 已放置 `MemoryPoint_01` 和红色球体 `MemoryPointMarker`，用于后续视线交互的落点定位。
+- `tools/ue/create_memory_interaction.py` 可重复导入照片、保存资产并重建地图落点；命令行日志输出 `CAMPUS_MEMORY MEMORY_ASSETS_OK`。
+
+阻塞点：UE5.8 Python 将 `EdGraphPinType` 暴露为不可写 opaque struct，`BlueprintEditorLibrary.add_member_variable` 无法通过命令行写入 Name/Text/Texture/Float 类型，因此尚未自动生成 Blueprint 变量、`Interact` 图、E 键 Line Trace 和 UMG 控件。下一次桌面编辑器批次需要打开这三个资产，按原计划补图并完成一次人工 PIE 交互验收。
+
+**下一步从任务 10 继续**：先生成可重复的项目验证脚本，验证当前地图、主楼、材质、照片和回忆点资产路径；随后在任务 11 用桌面编辑器补交互图并做路线测试。
 
 **编辑器注意**：桌面 2 上有一个打开的编辑器（PID 会话），Lvl_FirstPerson 处于脏标记（临时 Actor 已清理但关卡仍标记未保存）。关闭编辑器时选**不保存**；或继续在该会话控制台里执行后续 py 脚本（任务 7/8 也可这样跑）。
 
