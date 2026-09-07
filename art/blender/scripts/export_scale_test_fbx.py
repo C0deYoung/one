@@ -98,12 +98,34 @@ def join_objects(objects, name):
     return joined
 
 
+def bake_z_up_rotation(objects):
+    """Rotate mesh data +90 deg about world X so Blender-Y height becomes Z.
+
+    UE 5.8 (Interchange) reads Blender 5.2 FBX written with the default axis
+    declaration as an identity mapping (verified with this fixture: a Y-up
+    frame imported lying down, X/Y/Z unchanged). Baking the rotation into the
+    mesh data puts the content into standard Z-up form, which imports upright
+    without touching the source .blend files or adding level rotations.
+    """
+    from math import radians
+    from mathutils import Matrix
+
+    rotation = Matrix.Rotation(radians(90.0), 4, "X")
+    for obj in objects:
+        for vertex in obj.data.vertices:
+            vertex.co = rotation @ vertex.co
+        obj.data.update()
+
+
 def do_export():
     bpy.ops.wm.read_factory_settings(use_empty=True)
     frame_parts = build_scene()
     join_objects(frame_parts, FRAME_NAME)
 
-    for obj in bpy.data.objects:
+    export_objects = list(bpy.data.objects)
+    bake_z_up_rotation(export_objects)
+
+    for obj in export_objects:
         obj.select_set(True)
     os.makedirs(os.path.dirname(OUTPUT), exist_ok=True)
     bpy.ops.export_scene.fbx(
