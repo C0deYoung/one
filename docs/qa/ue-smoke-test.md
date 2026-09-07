@@ -39,3 +39,18 @@
 - Project Browser 的"质量预设"下拉框无法通过自动化展开，工程以 Maximum 预设创建；已通过合并脚手架低画质 RendererSettings 并显式关闭 RayTracing/Substrate/SkinCache 补偿，最终生效值见上表，等效达成 Scalable 目标。
 - 编辑器每次启动提示 VC++ 可再发行组件 14.44.35211.0 过旧（非阻断警告）；后续打包如遇问题优先更新 VC++ 运行库。
 - 验证机为真实桌面环境，编辑器运行于独立虚拟桌面以避免焦点竞争。
+
+## 2. L_CampusTest 启动验证（任务 7，2026-09-07）
+
+使用 `tools/ue/setup_campus_test_map.py` 保存目标地图后，运行：
+
+```powershell
+& 'E:\UE\UE_5.8\Engine\Binaries\Win64\UnrealEditor-Cmd.exe' `
+  'unreal\YunxiCampus\YunxiCampus.uproject' -game -NullRHI -Unattended -NoP4 `
+  -stdout -FullStdOutLogOutput '-ExecCmds=Quit'
+```
+
+结果：退出码 0；日志确认 `LoadMap(/Game/Campus/Maps/L_CampusTest)`、
+`SM_MainBuilding` 就绪、世界进入 Play 并正常退出。地图包含
+`MainBuilding`、`CampusGround`、`CampusPlayerStart`、`CampusSun` 和
+`CampusSkyLight` 五个 Actor。GUI PIE/Standalone 的人工行走路线尚未记录，安排在任务 11。

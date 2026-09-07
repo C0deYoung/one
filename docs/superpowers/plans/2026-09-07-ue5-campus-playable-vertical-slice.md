@@ -467,6 +467,7 @@ git commit -m "feat: import main building into UE5"
 
 **文件：**
 - 创建：`unreal/YunxiCampus/Content/Campus/Maps/L_CampusTest.umap`
+- 创建：`tools/ue/setup_campus_test_map.py`
 - 修改：`unreal/YunxiCampus/Config/DefaultEngine.ini`
 
 - [ ] **步骤 1：复制模板地图**

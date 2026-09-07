@@ -2,7 +2,7 @@
 
 **计划文件**：`docs/superpowers/plans/2026-09-07-ue5-campus-playable-vertical-slice.md`
 **执行日期**：2026-09-07（本文档由执行会话写入，供后续会话续接）
-**当前状态**：任务 1–5 已完成并提交；任务 6 已完成主楼导入、碰撞和三轴 Bounds 验收；任务 7–12 未开始。
+**当前状态**：任务 1–6 已完成并提交；任务 7 已完成关卡创建、场景布置、默认地图配置和无渲染启动验证；任务 8–12 未开始。
 
 ## 已完成任务（含提交号）
 
@@ -32,7 +32,7 @@
 6. **无头导入**：`UnrealEditor-Cmd.exe <uproject> -ExecutePythonScript=<script> -Unattended -NullRHI -NoP4`（约 4 分钟启动），仅当无 GUI 会话占用工程时可用；GUI 会话开着时改用控制台 py（脚本已做条件退出：命令行模式才 quit_editor）。
 7. `AssetImportTask()` 不能用关键字参数构造（逐属性赋值）；`list_assets` 用位置参数 `(path, False, True)`；`set_level_viewport_camera_info(loc, rot, unreal.Name("Perspective"))`。
 
-## 任务 6 当前状态（进行到一半）
+## 任务 6 当前状态（已完成）
 
 已完成：
 - `export_main_building_fbx.py` 已加 Z-up 烘焙并重新导出 `main-building.fbx`（1.4MB）。
@@ -46,7 +46,18 @@
 4. 材质槽数量为 10；平滑组缺失仅产生导入警告，没有阻断资产生成。
 5. 结果已补录到 `docs/qa/ue-import-validation.md`，并提交 `feat: import main building into UE5`。
 
-**下一步从任务 7 继续**：用编辑器 Python 创建 `L_CampusTest`，放置主楼、地面、PlayerStart 和基础日光，设置默认地图并进行 PIE/Standalone 路线测试。
+## 任务 7 当前状态（已完成）
+
+已完成：
+- 使用 `tools/ue/setup_campus_test_map.py` 在 UE5.8 命令行编辑器中生成并保存 `/Game/Campus/Maps/L_CampusTest`。
+- 关卡中已放置 `MainBuilding`、`CampusGround`（120m × 110m × 0.1m）、`CampusPlayerStart`、`CampusSun` 和 `CampusSkyLight`，脚本输出 5 个关卡 Actor。
+- `DefaultEngine.ini` 的 `EditorStartupMap` 与 `GameDefaultMap` 均已指向 `L_CampusTest`；项目级低画质配置继续生效。
+- 已使用 `UnrealEditor-Cmd.exe -game -NullRHI -ExecCmds=Quit` 启动验证，日志确认 `LoadMap(/Game/Campus/Maps/L_CampusTest)`、主楼静态网格就绪、世界进入 Play 并正常退出。
+- 过程中验证了 World Partition 模板地图不适合在同一命令行进程中重复 `load_level`；最终采用已复制的目标地图作为启动地图，再执行布置脚本，避免修改 `Lvl_FirstPerson` 外部 Actor。
+
+当前限制：任务 7 只验证了无渲染启动和地图加载，尚未完成 GUI PIE/Standalone 的 WASD 路线与入口碰撞人工验收；这些留到任务 11 的桌面测试批次统一完成。
+
+**下一步从任务 8 继续**：创建主楼不透明/玻璃材质母材质和实例，并把 10 个导入材质槽替换为低画质可读材质。
 
 **编辑器注意**：桌面 2 上有一个打开的编辑器（PID 会话），Lvl_FirstPerson 处于脏标记（临时 Actor 已清理但关卡仍标记未保存）。关闭编辑器时选**不保存**；或继续在该会话控制台里执行后续 py 脚本（任务 7/8 也可这样跑）。
 
