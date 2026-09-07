@@ -80,3 +80,10 @@ UE5.8 命令行 Python 将 `EdGraphPinType` 暴露为不可写的 opaque struct�
 运行 `tools/ue/validate_project.py` 的 UE5.8 命令行验证通过，日志输出：
 `YUNXI_VALIDATION_OK assets=8 actors=7 world=/Game/Campus/Maps/L_CampusTest.L_CampusTest`。
 验证内容包括 8 个必需资产、`MainBuilding`/`CampusGround`/`MemoryPoint_01` 三个地图标签，以及 Lumen、反射、Nanite 和 Virtual Shadow Maps 四个 CVar 均为 0。
+
+## 6. 桌面 PIE 阶段验证（任务 11，2026-09-07）
+
+- 从 UE5.8 编辑器打开 `L_CampusTest`，按 Play（PIE）启动成功。
+- 点击 PIE 视口取得焦点后发送 `W`，角色/视角发生移动；按 `F8` 正常退出 PIE。
+- 日志确认 `Created PIE world ... UEDPIE_0_L_CampusTest`、`PIE总开始时间：0.79秒`，未出现 Blueprint Runtime Error 或崩溃。
+- 当前视口照明偏暗，主楼可见区域有限；任务 11 的材质/灯光调校、截图、性能统计和任务 9 的交互图仍未完成。
