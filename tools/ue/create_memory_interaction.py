@@ -144,6 +144,7 @@ def place_memory_point(bp, texture):
     if memory is None:
         raise RuntimeError("failed to place MemoryPoint_01")
     memory.set_actor_label("MemoryPoint_01")
+    memory.set_editor_property("is_spatially_loaded", False)
     for prop, value in (
         ("memory_id", unreal.Name("Memory_01")),
         ("title", unreal.Text("升旗仪式")),
@@ -164,6 +165,7 @@ def place_memory_point(bp, texture):
     )
     if marker is not None:
         marker.set_actor_label("MemoryPointMarker")
+        marker.set_editor_property("is_spatially_loaded", False)
         marker.set_actor_scale3d(unreal.Vector(0.45, 0.45, 0.45))
         marker_material = unreal.EditorAssetLibrary.load_asset(
             "/Game/Campus/Materials/MI_Main_RedStructure"

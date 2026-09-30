@@ -9,7 +9,7 @@
 - 默认地图：`/Game/Campus/Maps/L_CampusTest`。
 - 主楼：`/Game/Campus/Buildings/MainBuilding/SM_MainBuilding`。
 - 低画质路线已启用：Lumen、Nanite、Virtual Shadow Maps、Motion Blur、Bloom 关闭。
-- Windows Development 包已在当前机器生成：`deliverables/windows/YunxiCampus/YunxiCampus.exe`。该目录被 `.gitignore` 忽略，需要在新电脑重新打包。
+- Windows Development 包已在当前机器生成；2026-09-30 可见性修复版位于 `deliverables/windows/visibility-fix/YunxiCampus.exe`。`deliverables/windows/` 被 `.gitignore` 忽略，需要在新电脑重新打包。
 - 当前未完成：回忆点 Blueprint 变量与 E 键交互、回忆卡片 UI、完整 WASD/Standalone 路线、性能截图和 10 分钟脱离编辑器游玩验收。
 
 ## 推荐运行环境
@@ -117,7 +117,7 @@ YUNXI_VALIDATION_OK assets=8 actors=7 world=/Game/Campus/Maps/L_CampusTest.L_Cam
 ```powershell
 $uat = 'E:\UE\UE_5.8\Engine\Build\BatchFiles\RunUAT.bat'
 $project = (Resolve-Path '.\unreal\YunxiCampus\YunxiCampus.uproject').Path
-$archive = (Resolve-Path '.\deliverables\windows').Path
+$archive = (New-Item -ItemType Directory -Force '.\deliverables\windows').FullName
 & $uat BuildCookRun `
   -project=$project `
   -platform=Win64 -clientconfig=Development `
@@ -128,10 +128,12 @@ $archive = (Resolve-Path '.\deliverables\windows').Path
 输出应为：
 
 ```text
-deliverables/windows/YunxiCampus/YunxiCampus.exe
+deliverables/windows/YunxiCampus.exe
 ```
 
 首次在新电脑完整构建或 Cook 时去掉 `-skipbuild -skipcook`；如果提示缺少 Windows SDK，先安装对应 SDK 和 Visual Studio C++ 组件。打包后可以用 `-nullrhi -unattended` 做最小启动检查：
+
+如果着色器编译提示无法写入用户目录，可在 `BuildCookRun` 命令末尾加入 `-AdditionalCookerOptions="-ShaderWorkingDir=<项目 Saved 目录下的可写路径>"`。2026-09-30 的修复包采用了这一参数；同一 UAT 流程完成 Cook、Stage 和 Pak，避免混用不同 Zen Store 的 Cook 结果。
 
 ```powershell
 Start-Process '.\deliverables\windows\YunxiCampus\YunxiCampus.exe' -ArgumentList '-nullrhi','-unattended'

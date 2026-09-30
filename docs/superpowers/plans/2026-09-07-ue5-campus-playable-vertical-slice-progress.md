@@ -127,6 +127,15 @@
 - 任务 10 验证脚本 validate_project.py（计划已给全文，直接落盘跑 UnrealEditor-Cmd）。
 - 任务 11 冒烟测试 + 截图；任务 12 RunUAT 打包（RunUAT.bat BuildCookRun，命令在计划中，包输出 deliverables/windows/YunxiCampus，已在 .gitignore）。
 
+## 2026-09-30：打包版黑屏修复与当前进度
+
+- 复现用户反馈：旧 Windows 包可移动，但几乎全黑。
+- 第一层原因是没有 SkyAtmosphere，且太阳光/天空光为 Stationary，而项目关闭了静态光照。已加入天空大气，改为 Movable 实时光源。
+- 打包截图随后只显示天空；Unlit 和 Wireframe 也看不到地面与主楼。进一步查明 World Partition 模板关卡中的主楼、地面、回忆点和标记被设为 `is_spatially_loaded=True`，但原型 Actor 嵌在关卡包里。已将四者设为常驻，重新 Cook/Pak 后截图确认主楼、地面和红色标记可见。
+- `tools/ue/validate_project.py` 已加入灯光和常驻 Actor 断言，验证输出 `YUNXI_VALIDATION_OK assets=8 actors=8`。
+- 本机最新可见性修复包为 `deliverables/windows/visibility-fix/YunxiCampus.exe`；截图和具体打包记录见 `docs/qa/ue-smoke-test.md`。旧的 `deliverables/windows/YunxiCampus/YunxiCampus.exe` 仍是黑屏版本。
+- 尚未完成：主楼写实材质与细节、回忆点 E 键交互/照片 UI、完整人工行走路线、性能指标和 10 分钟试玩。
+
 ## 提交记录（本会话）
 
 ```

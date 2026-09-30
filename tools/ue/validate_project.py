@@ -32,10 +32,24 @@ def validate():
         )
 
     actor_subsystem = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
-    labels = {actor.get_actor_label() for actor in actor_subsystem.get_all_level_actors()}
+    actors = {
+        actor.get_actor_label(): actor
+        for actor in actor_subsystem.get_all_level_actors()
+    }
+    labels = set(actors)
     for required_label in {"MainBuilding", "CampusGround", "MemoryPoint_01"}:
         if required_label not in labels:
             raise RuntimeError(f"Missing level actor: {required_label}")
+
+    if "CampusSkyAtmosphere" not in labels:
+        raise RuntimeError("Missing level actor: CampusSkyAtmosphere")
+    for label in ("MainBuilding", "CampusGround", "MemoryPoint_01", "MemoryPointMarker"):
+        if actors[label].get_editor_property("is_spatially_loaded"):
+            raise RuntimeError(f"{label} must be always loaded in this prototype map")
+    for label in ("CampusSun", "CampusSkyLight"):
+        light = actors[label].get_editor_property("light_component")
+        if light.get_editor_property("mobility") != unreal.ComponentMobility.MOVABLE:
+            raise RuntimeError(f"{label} must be movable with static lighting disabled")
 
     for cvar in (
         "r.DynamicGlobalIlluminationMethod",

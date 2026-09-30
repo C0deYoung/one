@@ -95,3 +95,16 @@ UE5.8 命令行 Python 将 `EdGraphPinType` 暴露为不可写的 opaque struct�
 - 包路径：`deliverables/windows/YunxiCampus/YunxiCampus.exe`，可执行文件约 168 KiB；内容容器位于同目录 `YunxiCampus/Content/Paks/`，归档生成物由 `.gitignore` 忽略。
 - 启动前安装 UE 自带 VC++ 运行库 `14.50.35719`（此前 14.44 过旧）；随后以 `-nullrhi -unattended` 启动包，进程成功创建并保持运行，随后正常结束测试进程。
 - 尚未做脱离编辑器的 10 分钟人工游玩；回忆点交互图和最终视觉调校完成后再补完整包验收。
+
+## 8. 打包版黑屏修复（2026-09-30）
+
+用户反馈：进入 Windows 包后能奔跑，但画面几乎全黑。最初的包中无天空大气，太阳光和天空光仍为 Stationary，而项目关闭了静态光照。加入 SkyAtmosphere 并将两盏灯改为 Movable 后，打包截图能看到天空，但主楼和地面依然缺失。
+
+进一步用 `viewmode unlit` 和 `viewmode wireframe` 截图检查，确认问题不在材质，而在 Actor 运行时加载。`L_CampusTest` 复制自 World Partition 模板；主楼、地面、回忆点和标记的 `is_spatially_loaded=True`，但这些原型 Actor 保存在关卡包中，没有对应的外部 Actor 包。将这四个 Actor 设为 `is_spatially_loaded=False` 后重新 Cook/Pak，新包的启动截图清楚显示天空、白色地面、主楼体块和红色回忆点标记：
+
+![修复后的打包版启动画面](ue-campus-visible-2026-09-30.png)
+
+- 验证脚本输出：`YUNXI_VALIDATION_OK assets=8 actors=8 world=/Game/Campus/Maps/L_CampusTest.L_CampusTest`。
+- 新包路径：`deliverables/windows/visibility-fix/YunxiCampus.exe`。该包在本机 `Saved/StagedBuilds/Windows` 的完整 StagedBuild 基础上复制，内容容器时间为 2026-09-30 15:41；旧包仍在 `deliverables/windows/YunxiCampus/YunxiCampus.exe`，不要用旧包验证本次修复。
+- 新包已启动并加载 `L_CampusTest`，自动启动截图确认场景可见。仍需真人完成完整行走路线、入口碰撞和 10 分钟试玩。回忆点 E 键与卡片 UI 仍待制作。
+- Cook 期间曾因页面文件空间不足中断；最终以 `-AdditionalCookerOptions=-ShaderWorkingDir=<项目 Saved 路径>` 完成 UAT Cook/Stage/Pak。旧归档目录中的 `tbbmalloc.dll` 被进程占用，因此将已完成的 StagedBuild 复制到独立的 `visibility-fix` 目录。

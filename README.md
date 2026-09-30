@@ -8,6 +8,7 @@
 > 要在另一台电脑继续 UE5 开发，请先阅读
 > [`docs/pipeline/ue5-continue-on-another-pc.md`](docs/pipeline/ue5-continue-on-another-pc.md)。
 > UE5 项目入口是 `unreal/YunxiCampus/YunxiCampus.uproject`，当前低画质可启动基线和未完成项都在该指南中记录。
+> 本机 2026-09-30 黑屏修复后的试玩入口是 `deliverables/windows/visibility-fix/YunxiCampus.exe`；打包目录不随 Git 同步。
 
 | 白天 | 晚自习（按 N） |
 |------|------|

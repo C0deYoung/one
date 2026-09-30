@@ -39,6 +39,7 @@ def remove_previous_setup(actor_sub):
         "CampusPlayerStart",
         "CampusSun",
         "CampusSkyLight",
+        "CampusSkyAtmosphere",
     }
     removed = 0
     for actor in list(actor_sub.get_all_level_actors()):
@@ -49,6 +50,7 @@ def remove_previous_setup(actor_sub):
 
 def main():
     try:
+        unreal.EditorLevelLibrary.load_level(TARGET_MAP)
         editor_world = unreal.EditorLevelLibrary.get_editor_world()
         if editor_world is None:
             raise RuntimeError("editor world unavailable")
@@ -74,6 +76,7 @@ def main():
         if building_actor is None:
             raise RuntimeError("failed to spawn main building")
         building_actor.set_actor_label("MainBuilding")
+        building_actor.set_editor_property("is_spatially_loaded", False)
 
         ground = actor_sub.spawn_actor_from_object(
             cube,
@@ -83,6 +86,7 @@ def main():
         if ground is None:
             raise RuntimeError("failed to spawn ground")
         ground.set_actor_label("CampusGround")
+        ground.set_editor_property("is_spatially_loaded", False)
         ground.set_actor_scale3d(unreal.Vector(120.0, 110.0, 0.1))
 
         player_start = spawn_class(
@@ -104,7 +108,21 @@ def main():
             "CampusSun",
         )
         directional.get_editor_property("light_component").set_editor_property(
-            "intensity", 5.0
+            "intensity", 10.0
+        )
+        directional.get_editor_property("light_component").set_editor_property(
+            "mobility", unreal.ComponentMobility.MOVABLE
+        )
+        directional.get_editor_property("light_component").set_editor_property(
+            "atmosphere_sun_light", True
+        )
+
+        spawn_class(
+            actor_sub,
+            "SkyAtmosphere",
+            unreal.Vector(0.0, 0.0, 0.0),
+            unreal.Rotator(roll=0.0, pitch=0.0, yaw=0.0),
+            "CampusSkyAtmosphere",
         )
 
         sky = spawn_class(
@@ -115,7 +133,13 @@ def main():
             "CampusSkyLight",
         )
         sky.get_editor_property("light_component").set_editor_property(
-            "intensity", 0.5
+            "intensity", 1.0
+        )
+        sky.get_editor_property("light_component").set_editor_property(
+            "mobility", unreal.ComponentMobility.MOVABLE
+        )
+        sky.get_editor_property("light_component").set_editor_property(
+            "real_time_capture", True
         )
 
         origin, extent = building_actor.get_actor_bounds(False)
