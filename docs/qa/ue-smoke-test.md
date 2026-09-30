@@ -108,3 +108,15 @@ UE5.8 命令行 Python 将 `EdGraphPinType` 暴露为不可写的 opaque struct�
 - 新包路径：`deliverables/windows/visibility-fix/YunxiCampus.exe`。该包在本机 `Saved/StagedBuilds/Windows` 的完整 StagedBuild 基础上复制，内容容器时间为 2026-09-30 15:41；旧包仍在 `deliverables/windows/YunxiCampus/YunxiCampus.exe`，不要用旧包验证本次修复。
 - 新包已启动并加载 `L_CampusTest`，自动启动截图确认场景可见。仍需真人完成完整行走路线、入口碰撞和 10 分钟试玩。回忆点 E 键与卡片 UI 仍待制作。
 - Cook 期间曾因页面文件空间不足中断；最终以 `-AdditionalCookerOptions=-ShaderWorkingDir=<项目 Saved 路径>` 完成 UAT Cook/Stage/Pak。旧归档目录中的 `tbbmalloc.dll` 被进程占用，因此将已完成的 StagedBuild 复制到独立的 `visibility-fix` 目录。
+
+## 9. 主楼正立面细化（2026-09-30）
+
+对照 `E:\download\pic\一中\07_主楼正面_官方.jpg`，上一版只显示深色实体墙，窗格、中央绿玻璃塔和入口都不可见。`tools/ue/add_facade_overlay.py` 在关卡中生成 193 个可编辑的轻量立面模块，覆盖两翼五层窗格、蓝色楼层线、中央绿玻璃格栅及入口雨棚。`tools/ue/polish_facade_lighting.py` 调整太阳角度、天空光和广场材质。地图保留低画质设置，没有启用 Lumen、Nanite 或虚拟阴影。
+
+UE5.8 `BuildCookRun` Cook/Stage/Pak 成功，实际游戏窗口截图如下。启动时的 `-ExecCmds="HighResShot 1"` 会在第 6 帧左右拍摄，出现天空加黑色下半屏；等待数秒后，运行中的窗口正常显示，故最终以窗口实时画面验收。
+
+![主楼立面细化后的实际游戏窗口](ue-facade-live-2026-09-30.png)
+
+- 本机试玩入口：`deliverables/windows/facade-pass/YunxiCampus.exe`（完整目录一起保留）。
+- 仍是参考照片引导的立面原型：缺少校名/校徽、真实瓷砖纹理、树木、旗杆、广场铺装细节；Blender FBX 立面朝向与 UE 导入仍需校正，当前用独立关卡模块确保游戏内可见。
+- 回忆点红色标记可见，但 `E` 键卡片交互尚未完成；本次只验证启动和初始视角，没有完成 10 分钟人工游玩。

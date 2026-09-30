@@ -53,6 +53,7 @@ def scalar_parameter(material, name, value, x, y, property_name=None):
 def build_master():
     material = create_asset("M_Campus_Master", unreal.Material, unreal.MaterialFactoryNew)
     material.set_editor_property("blend_mode", unreal.BlendMode.BLEND_OPAQUE)
+    material.set_editor_property("two_sided", False)
     material.set_editor_property(
         "shading_model", unreal.MaterialShadingModel.MSM_DEFAULT_LIT
     )
@@ -148,7 +149,7 @@ def choose_instance(slot_name, instances):
         return instances["MI_Main_BlueBand"]
     if "redpaving" in name or "red_paving" in name or "paving" in name:
         return instances["MI_Main_RedPaving"]
-    if "redstructure" in name or "red_structure" in name:
+    if "redstructure" in name or "red_structure" in name or "redletters" in name:
         return instances["MI_Main_RedStructure"]
     if "concrete" in name:
         return instances["MI_Main_Concrete"]
